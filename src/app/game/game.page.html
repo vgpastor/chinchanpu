@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>game</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-img id="adversary" [src]="'./assets/'+adversary+'.png'"></ion-img>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col id="paper" class="option">
+        <ion-img src="./assets/paper.png" (click)='game("paper")'></ion-img>
+      </ion-col>
+      <ion-col id="rock" class="option">
+        <ion-img src="./assets/rock.png" (click)='game("rock")'></ion-img>
+      </ion-col>
+      <ion-col id="scissors" class="option">
+        <ion-img src="./assets/scissors.png" (click)='game("scissors")'></ion-img>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-grid>
+    <ion-row>
+      <ion-col class="ion-text-center">
+        <h2>Player</h2>
+        <span>{{resultsService.getWinnerPlayer()}}</span>
+      </ion-col>
+      <ion-col class="ion-text-center">
+        <h2>Tie</h2>
+        <span>{{resultsService.getWinnerTie()}}</span>
+      </ion-col>
+      <ion-col class="ion-text-center">
+        <h2>Enemy</h2>
+        <span>{{resultsService.getWinnerEnemy()}}</span>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+        <ion-button expand="block" fill="outline" (click)='tryAgain()'>Try Again</ion-button>
+      </ion-col>
+      <ion-col>
+        <ion-button expand="block" fill="outline" (click)='restart()'>Restart</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

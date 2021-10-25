@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>history</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-grid>
+    <ion-row class="header">
+      <ion-col>
+        <h3>Player</h3>
+      </ion-col>
+      <ion-col >
+        <h1>Results</h1>
+      </ion-col>
+      <ion-col>
+        <h3>Enemy</h3>
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngFor="let result of resultsService.getResults()" class="result">
+      <ion-col>
+        <ion-img src="./assets/{{result.player}}.png" [ngClass]="[result.winner === 1?'bordered':'',result.winner === 0?'tie':'']"></ion-img>
+      </ion-col>
+      <ion-col >
+        {{result.winner}}
+      </ion-col>
+      <ion-col>
+        <ion-img src="./assets/{{result.enemy}}.png" [ngClass]="[result.winner === -1?'bordered':'',result.winner === 0?'tie':'']"></ion-img>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+</ion-content>
