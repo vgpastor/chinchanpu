@@ -9,7 +9,7 @@ import {ResultsService} from '../results.service';
 })
 export class HistoryPage implements OnInit {
 
-  constructor(private resultsService: ResultsService) { }
+  constructor(public resultsService: ResultsService) { }
 
   ngOnInit() {
     this.resultsService.updateResults();

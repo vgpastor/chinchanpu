@@ -15,7 +15,7 @@ export class GamePage implements OnInit {
   gameEnd: boolean;
   animation: Animation;
 
-  constructor(private resultsService: ResultsService) {
+  constructor(public resultsService: ResultsService) {
     this.adversary = 'random';
 
     this.animation = createAnimation()

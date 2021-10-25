@@ -30,8 +30,8 @@ cd chinchanpu && npm install
 
 ### Android
 
-1. Run `ionic cordova run android --prod`
+1. Run `ionic capacitor build android --prod`
 
 ### iOS
 
-1. Run `ionic cordova run ios --prod`
+1. Run `ionic capacitor build ios --prod`
