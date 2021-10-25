@@ -12,6 +12,7 @@ export class HistoryPage implements OnInit {
   constructor(private resultsService: ResultsService) { }
 
   ngOnInit() {
+    this.resultsService.updateResults();
   }
 
 }

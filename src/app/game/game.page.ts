@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import {ResultsService} from "../results.service";
+import {ResultsService} from '../results.service';
+
+import { Animation, createAnimation } from '@ionic/core';
 
 @Component({
   selector: 'app-game',
@@ -12,20 +13,24 @@ export class GamePage implements OnInit {
   player: string;
 
   gameEnd: boolean;
-
-  hands = [
-    'random',
-    'rock',
-    'paper',
-    'scissors'
-  ];
+  animation: Animation;
 
   constructor(private resultsService: ResultsService) {
     this.adversary = 'random';
+
+    this.animation = createAnimation()
+      .addElement(document.querySelector('#adversary2'))
+      .duration(500)
+      .direction('alternate')
+      .iterations(Infinity)
+      .keyframes([
+        { offset: 0, transform: 'rotate(0deg)', opacity: '1' },
+        { offset: 1, transform: 'rotate(180deg)', opacity: '0.8' }
+      ]);
   }
 
   ngOnInit() {
-    // this.adversary = './assets/paper.png';
+    this.resultsService.updateResults();
   }
 
   /**
@@ -50,38 +55,32 @@ export class GamePage implements OnInit {
    *
    * @param hand
    */
-  game(hand){
-    if(this.gameEnd){
+  async game(hand) {
+    if (this.gameEnd) {
       return;
     }
+    this.animation.play();
     this.gameEnd = true;
 
     this.player = hand;
 
-    if(hand === 'rock'){
-      document.getElementById( 'paper' ).style.display = 'none';
-      document.getElementById( 'scissors' ).style.display = 'none';
+    if (this.player === 'rock') {
+      document.getElementById('paper').style.display = 'none';
+      document.getElementById('scissors').style.display = 'none';
     }
-    if(hand === 'paper'){
-      document.getElementById( 'rock' ).style.display = 'none';
-      document.getElementById( 'scissors' ).style.display = 'none';
+    if (this.player === 'paper') {
+      document.getElementById('rock').style.display = 'none';
+      document.getElementById('scissors').style.display = 'none';
     }
-    if(hand === 'scissors'){
-      document.getElementById( 'rock' ).style.display = 'none';
-      document.getElementById( 'paper' ).style.display = 'none';
+    if (this.player === 'scissors') {
+      document.getElementById('rock').style.display = 'none';
+      document.getElementById('paper').style.display = 'none';
     }
 
-    this.getRandomAdversary();
-
-    let winner = this.getWinner();
-    console.log(winner);
-    this.resultsService.addResult({
-      player: this.player,
-      enemy: this.adversary,
-      winner: winner,
-      dateOfGame: new Date()
+    this.resultsService.generate(this.player).then(result => {
+      this.animation.stop();
+      this.adversary = result.enemy;
     });
-
 
   }
 
@@ -90,49 +89,4 @@ export class GamePage implements OnInit {
     document.getElementById( 'scissors' ).style.display = 'block';
     document.getElementById( 'rock' ).style.display = 'block';
   }
-
-  private getRandomAdversary(){
-    const options = this.hands;
-    options.forEach((element,index)=>{
-      if(element==='random') {options.splice(index,1);}
-    });
-    console.log(options);
-    const random = Math.floor(Math.random() * options.length);
-    this.adversary = this.hands[random];
-    console.log(this.hands[random]);
-  }
-
-  /**
-   * Return the winner
-   * -1 Adversary Wins
-   * 0 Equal
-   * 1 Player Wins
-   *
-   * @private
-   * @return number
-   */
-  private getWinner(){
-    if(this.player === this.adversary){
-      return 0;
-    }
-    if(this.player === 'rock' && this.adversary === 'paper'){
-      return -1;
-    }
-    if(this.player === 'rock' && this.adversary === 'scissors'){
-      return 1;
-    }
-    if(this.player === 'paper' && this.adversary === 'rock'){
-      return 1;
-    }
-    if(this.player === 'paper' && this.adversary === 'scissors'){
-      return -1;
-    }
-    if(this.player === 'scissors' && this.adversary === 'paper'){
-      return 1;
-    }
-    if(this.player === 'scissors' && this.adversary === 'rock'){
-      return -1;
-    }
-  }
-
 }
